@@ -1,0 +1,94 @@
+<script language='javascript'>
+	function ssi_del(name) {
+		if (confirm("确认删除吗？") == false) {
+			return;
+		}
+		window.location = "?c=ssi&a=del&name=" + name;
+	}
+</script>
+     <main class="lyear-layout-content">
+
+ <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12">
+                  <!-- START panel-->
+                    <div class="card"  action="">
+                     <div class="card-header"><h4>SSI设置</h4></div>
+                     <div class="panel-body">
+                     <div class="col-lg-12">
+                        <!-- START table-responsive-->
+                        <div class="table-responsive">
+						<table class="table" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr>
+			<th>操作</th>
+			<th>顺序</th>
+			<th>映射</th>
+		</tr>
+	</thead>
+	<tbody>
+	{{foreach from=$path_map item=row}}
+	<tr>
+		<td><a class="btn btn-danger btn-xs" href="javascript:ssi_del('0,{{$row.name}}')">删除</a></td>
+		<td>{{$row.id}}</td>
+		<td>路径：{{$row.rawname}}</td>
+	</tr>
+	{{/foreach}} {{foreach from=$file_map item=row}}
+	<tr>
+		<td><a class="btn btn-danger btn-xs" href="javascript:ssi_del('1,{{$row.name}}')">删除</a></td>
+		<td>{{$row.id}}</td>
+		<td>扩展名：{{$row.rawname}}</td>
+	</tr>
+	{{/foreach}}
+    </tbody>
+</table>
+                        </div>
+	                        <form action="?c=ssi&a=add" method="post" class="form-horizontal">
+						
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">类型：</label>
+								 <div class="col-xs-12">
+				<select name='file_ext' class="form-control">
+					<option value='1'>文件扩展名</option>
+					<option value='0'>路径</option>
+				</select>
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">值：</label>
+								 <div class="col-xs-12">
+								 <input type='text' name='value' placeholder="请输入值" class="form-control" /> 
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">先后顺序：</label>
+								 <div class="col-xs-12">
+								 <input type='text' name='id' value='100' size=6 class="form-control" />  
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+								 <div class="col-xs-12">
+								 <input type="submit" value="确定" class="btn btn-purple">  
+                                 </div>
+                              </div>
+                           </fieldset>
+	                      </form>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+				</div>
+			   </div>
+           </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>

@@ -1,0 +1,163 @@
+<script language='javascript' src='{{$STATIC}}js/domain.js'></script>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>域名绑定</h4></div>
+                <div class="panel-body">
+	             <div class="col-lg-12">
+                        <!-- START table-responsive-->
+                        <div class="table-responsive">
+                           <table class="table">
+                              <thead>
+                                 <tr>
+                                    <th>操作</th>
+                                    <th>域名</th>
+                                    <th>{{if $user.cdn}}源站IP{{else}}目录{{/if}}</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+							  {{foreach from=$list item=row}}
+		<tr id='{{$row.id}}t'>
+			<td style="border-left:0"><a class="btn btn-danger btn-xs" href="javascript:domain_del('{{$row.name}}',{{$row.id}})">删除</a>{{if $user.cdn && $ssl}}&nbsp;<a class="btn btn-success btn-xs" href="?c=index&a=domainSslForm&domain={{$row.name}}">SSL证书</a>{{/if}}</td>
+			<td>{{if $row.ssl}}<i style="color:#82af6f;vertical-align: -.125em;" title="域名成功设置SSL证书"><svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="lock" aria-hidden="true"><path d="M832 464h-68V240c0-70.7-57.3-128-128-128H388c-70.7 0-128 57.3-128 128v224h-68c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V496c0-17.7-14.3-32-32-32zM332 240c0-30.9 25.1-56 56-56h248c30.9 0 56 25.1 56 56v224H332V240zm460 600H232V536h560v304zM484 701v53c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-53a48.01 48.01 0 1 0-56 0z"></path></svg></i>&nbsp;{{/if}}<a href='http://{{$row.name}}' target='_blank'>{{$row.name}}</a></td>
+			<td>{{$row.value}}{{if $row.proto}}&nbsp;({{$row.proto}}){{/if}}&nbsp;</td>
+		</tr>
+		{{/foreach}}
+                              </tbody>
+                           </table>
+                        </div>
+                        <!-- END table-responsive-->
+						<br>
+	                        <form name='nodeform' action="javascript:domain_add();" method="post" class="form-horizontal">
+                           <div class="form-group">
+                              <label class="col-xs-12">域名:</label>
+                              <div class="col-xs-12">
+                                 <input type='text' name='domain' id='domain' placeholder="请输入您要绑定的域名：如：nanyinet.com" value="{{$domain.domain}}" class="form-control">
+                              </div>
+                           </div>
+						   {{if $subdir_flag}}
+                           <div class="form-group">
+                              <label class="col-xs-12">{{if $user.cdn}}源站IP:{{else}}目录:{{/if}}</label>
+                              <div class="col-xs-12">
+                                 <input type='text' name='subdir' id='subdir' value="{{$default_subdir}}" class="form-control">
+                              </div>
+                           </div>
+						   {{if $user.cdn}}
+						   <div class="form-group">
+                              <label class="col-xs-12">回源协议:</label>
+                              <div class="col-xs-12">
+                                 <select name="proto" id="proto" onchange="if(this.value=='https'||this.value=='follow')layer.alert('选择此项必须先在源站配置好SSL证书', {icon: 'warning'});" class="form-control">
+									<option value="http">http</option>
+									<option value="https">https</option>
+									<option value="follow">协议跟随</option>
+									{{if getRole('admin')}}<option value="tcp">tcp</option>{{/if}}
+								</select>
+                              </div>
+                           </div>{{/if}}
+						   {{/if}}
+						   
+                           <div class="form-group row">
+                                            <div class="col-xs-12">
+				<input type="button" id='button' class="btn btn-purple" onclick='domain_add();' value="确定" />
+				<input type="button" id='button_import' class="btn btn-info" onclick='piao_domain_import();' value="批量增加" />
+				<input type="button" id='button_cancel' class="btn btn-secondary" style="display:none" onclick='cancel_edit();' value="取消编辑" />
+                                            </div>
+                                        </div>
+
+	</form>
+                  
+
+				
+	<p><div class="label label-danger">注意事项</div> &nbsp; 增加域名绑定，在添加绑定之前请先解析域名：<font color='red'>{{$domain_note}}</font></p>
+   <p><div class="label label-info">帮助文档</div> &nbsp; <a href="" data-toggle="modal" data-target="#myModal">如何绑定域名？</a></p>
+			   <p><div class="label label-success">帮助文档</div> &nbsp; <a href="" data-toggle="modal" data-target="#ejym">二级域名如何绑定子目录？</a></p>
+			   <p><div class="label label-warning">提示说明</div> &nbsp; 在万网等服务商新购的域名在做绑定前请先 删除 它默认的 A记录 ，否则会出现域名访问不是您的主机的错误。</p>
+			   <p><div class="label label-purple">外链教程</div> &nbsp; 各大域名商解析图文教程：    <a href="https://jingyan.baidu.com/article/fcb5aff7e49472edaa4a713c.html" data-toggle="modal" data-target="#ww">万网CNAME解析</a> &nbsp; <a href="http://jingyan.baidu.com/album/f96699bba5a0c2894f3c1b77.html" target="_blank"> DNSPOD</a>  &nbsp; <a href="http://jingyan.baidu.com/article/3052f5a1ab772297f31f86c2.html" target="_blank">西部数码</a>  &nbsp; <a href="http://jingyan.baidu.com/article/154b4631aaabbb28cb8f416a.html" target="_blank">景安</a> </p>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+				</div>
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+            
+                           </div>
+         </section>
+         <!-- END Page content-->
+	  </section>
+      <!-- END Main section-->
+   </section>
+   <!-- END Main wrapper-->
+
+   <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+               <h4 id="myModalLabel" class="modal-title">如何绑定域名</h4>
+            </div>
+            <div class="modal-body">
+		    <p>在 “域名” 框填上您要绑定的域名，如：xxx.com，“目录” 框内填目录名，如：wwwroot (wwwroot为默认主目录)</p>
+			<br />
+			<p>如下图所示：</p>
+			<p><img src="{{$STATIC}}style/2014host/img/ymbd.jpg" class="img-thumbnail"></p>
+			</div>
+            <div class="modal-footer">
+               <button type="button" data-dismiss="modal" class="btn btn-danger">关闭</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div id="ejym" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+               <h4 id="myModalLabel" class="modal-title">二级域名绑定,子目录绑定</h4>
+            </div>
+            <div class="modal-body">
+		    <p>例：将bbs.xxx.com绑定到主目录的bbs文件夹下，需要进入wwwroot文件夹，新建bbs目录，然后返回本页，在 “域名” 框内填：bbs.xxx.com， “目录” 框内填：wwwroot/bbs 即可完成绑定。</p>
+			<br />
+			<p>如下图所示：</p>
+			<p><img src="{{$STATIC}}style/2014host/img/ejym.jpg" class="img-thumbnail"></p>
+			</div>
+            <div class="modal-footer">
+               <button type="button" data-dismiss="modal" class="btn btn-danger">关闭</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+   <div id="ww" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+               <h4 id="myModalLabel" class="modal-title">万网CNAME解析教程</h4>
+            </div>
+            <div class="modal-body">
+		    <p>1. 登录万网，进入您的域名管理页，在“解析设置” 页点击 “进入高级设置”。（如下图所示，点击图片查看高清大图）</p>
+			<p><a href="{{$STATIC}}style/2014host/img/ww1.png" target="_blank"><img src="{{$STATIC}}style/2014host/img/ww1.png" class="img-thumbnail"></a></p>
+			<br />
+		    <p>2. 点击 “添加解析”  “记录类型”选择“cname”，“主机记录”填您需要绑定的域名前缀，“记录值”填写我们为您提供的cname的解析地址。（如下图所示，点击图片查看高清大图）</p>
+			<p><a href="{{$STATIC}}style/2014host/img/ww2.png" target="_blank"><img src="{{$STATIC}}style/2014host/img/ww2.png" class="img-thumbnail"></a></p>
+			<p><a href="{{$STATIC}}style/2014host/img/ww3.png" target="_blank"><img src="{{$STATIC}}style/2014host/img/ww3.png" class="img-thumbnail"></a></p>
+			</div>
+            <div class="modal-footer">
+               <button type="button" data-dismiss="modal" class="btn btn-danger">关闭</button>
+            </div>
+         </div>
+      </div>
+   </div>
+<script>
+	nodeform.domain.focus();
+</script>
+
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script><script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

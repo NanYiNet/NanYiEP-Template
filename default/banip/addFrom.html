@@ -1,0 +1,90 @@
+<script language='javascript' src='{{$STATIC}}js/banip.js'></script>
+            <main class="lyear-layout-content">
+
+ <div class="container-fluid">
+			<div class="row">
+               <div class="col-md-12">
+                  <!-- START panel-->
+                   <div class="card"  action="">
+                     <div class="card-header"><h4>禁止IP访问</h4></div>
+                     <div class="panel-body">
+                     <div class="col-lg-12">
+                        <div class="table-responsive">
+<table class="table" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr>
+			<th>操作</th>
+			<th>禁止IP</th>
+			<th>禁止时间</th>
+		</tr>
+	</thead>
+	<tbody>
+	{{foreach from=$ips item=row}}
+	<tr>
+		<td ><a class="btn btn-danger btn-xs" href="javascript:banip_del({{$row.id}})">删除</a></td>
+		<td>{{$row.ip}}</td>
+		<td>{{if $row.expire==0}}永久{{else}}{{ceil(($row.expire-time())/60)}}{{/if}}</td>
+	</tr>
+	{{/foreach}}
+	</tbody>
+</table>
+	</div>
+						  	<form action='?c=banip&a=addBanip' method='post' class="form-horizontal">
+						
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">功能开关：</label>
+								 <div class="col-xs-12">
+				{{if $banip==0}} 
+				                              <label class="lyear-switch switch-purple switch-light">
+				<input type="checkbox" onclick="javascript:banip_checkon(1)" title='开启功能'>
+                                 <span></span>                              </label>
+		        {{else}} 
+				                              <label class="lyear-switch switch-purple switch-light">
+				<input type="checkbox" onclick="javascript:banip_checkon(2)" title='关闭功能' checked="checked">
+                                 <span></span>                              </label>
+				{{/if}}
+
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">禁止IP/IP段：</label>
+								 <div class="col-xs-12">
+                                    <input name='ip' id='ip' size="15" class="form-control" placeholder="请输入禁止IP/IP段"/>             </div>
+								 <div class="col-xs-12">
+                                    <pre>禁止单个IP：192.168.0.1&nbsp;&nbsp;&nbsp;禁止IP段：192.168.0.1/24</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">禁止时间：</label>
+								 <div class="col-xs-12">
+                                    <input name='life_time' id='life_time' value='0' size="4" class="form-control" />             </div>
+								 <div class="col-xs-12">
+                                    <pre>0为永久禁止，时间单位为：分钟</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+								 <div class="col-xs-12">
+                                    <input type='button' onclick='banip_add();' value='增加' class="btn btn-purple" />             </div>
+                              </div>
+                           </fieldset>
+						   </div>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+
+			   </div>
+            </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

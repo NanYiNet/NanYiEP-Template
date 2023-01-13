@@ -1,0 +1,127 @@
+<script language='javascript' src='{{$STATIC}}js/speed.js'></script>
+<script language='javascript'></script>
+<!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+		 <div class='pro_msg' style="display: none" id='msg'></div>
+            <div class="card">
+              <div class="card-header"><h4>带宽限制</h4></div>
+                <div class="panel-body">
+	             <div class="col-lg-12">
+                        <div class="table-responsive">
+	<table class="table" cellpadding="0" cellspacing="0">
+	    <thead>
+		<tr>
+			<th>操作</th>
+			<th>限制模式</th>
+			<th>限制带宽</th>
+			<th>目录</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{foreach from=$sp item=row}}
+		<tr>
+			<td><a class="btn btn-danger btn-xs" href="javascript:speed_del({{$row.id}})">删除</a></td>
+			<td>{{if $row.mode=='s'}}每个请求限制{{elseif
+				$row.mode=='i'}}每IP限制{{else}}分组限制{{/if}}</td>
+			<td>{{$row.limit/1024}}KB/秒</td>
+			<td>{{$row.path}}</td>
+		</tr>
+		{{/foreach}}
+		</tbody>
+	</table>
+	</div>
+                          <div class="col-md-12">
+
+						  	<form action='?c=speed&a=speedAdd' method='post' name='from' class="form-horizontal">
+						
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>功能开关:</label>
+								 <div>
+				{{if $at==0}} 
+ <label class="lyear-switch switch-primary switch-light">
+                        <input type="checkbox" onclick="javascript:speed_checkon(1)">
+                        <span></span>
+                      </label>
+
+				               
+		        {{else}} 
+				               <label class="lyear-switch switch-primary switch-light">
+                        <input type="checkbox" onclick="javascript:speed_checkon(2)" checked>
+                        <span></span>
+                      </label>        
+				{{/if}}
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>限制类别:</label>
+								 <div>
+				     <select name='mode' id='mode' onchange='piao_msg(this.value);' class="form-control">
+						 <option value="speed_limit">每个请求限制</option>
+						 <option value="ip_speed_limit">每IP限制</option>
+						 <option value='gspeed_limit'>分组限制</option>
+				     </select>
+                                  </div>
+								 <div>
+                                    <pre>请选择类别</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>带宽:</label>
+								 <div>
+						  <input name="limit" id='limit' class="form-control" placeholder="请输入带宽" />
+                                  </div>
+								 <div>
+                                    <pre>例：200，单位：KB/秒。只填数字即可</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>目录:</label>
+								 <div>
+                            <input name='path' placeholder="请输入目录（可为空）" onfocus='check_onfocus_value(this.id)' onblur='check_onblur_value(this.id)' id='path' class="form-control" />  
+                                  </div>
+								 <div><pre>可以为空不填</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label></label>
+								 <div>
+                            <input type='button' value='增加规则' onclick='speed_add();' class="btn btn-purple" />
+                                  </div>
+                              </div>
+                           </fieldset>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+
+
+
+	<div id='script'></div>
+	
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+           </div>
+      
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>
+
+<script language='javascript'>
+//document.getElementById("path").defaultValue='';
+from.limit.focus();
+document.from.path.style.color="#999999"
+</script>

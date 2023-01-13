@@ -1,0 +1,112 @@
+<script language='javascript' src='{{$STATIC}}js/antisql.js'></script>
+           <main class="lyear-layout-content">
+
+ <div class="container-fluid">
+			
+			<div class="row">
+               <!-- START dashboard main content-->
+               <div class="col-md-12">
+
+
+<div class='piao_msg' align='center' style="display: none" id='msg'></div>
+<div class='piao_msg' style="display: none" id='msg'></div>
+
+                  <!-- START panel-->
+                  <div class="card"  action="">
+                     <div class="card-header"><h4>参数过滤</h4></div>
+                     <div class="panel-body">
+                     <div class="col-lg-12">
+                        <div class="table-responsive">
+<table class="table"cellpadding="0" cellspacing="0">
+    <thead>
+	<tr>
+		<th>操作</th>
+		<th>过滤参数值</th>
+		<th>编码</th>
+		<th>过滤方式</th>
+	</tr>
+	</thead>
+	<tbody>
+	{{foreach from=$sql item=row}}
+	<tr>
+		<td><a class="btn btn-danger btn-xs" href="javascript:antisql_del({{$row.id}})">删除</a></td>
+		<td>{{$row.value}}</td>
+		<td>{{$row.charset}}</td>
+		<td>{{if $row.get==1}}get&nbsp;{{/if}}{{if $row.post==1}}post{{/if}}</td>
+	</tr>
+	{{/foreach}}
+	</tbody>
+</table>
+	</div>
+						  	<form action='?c=antisql&a=antisqlAdd' method='post' name='form' class="form-horizontal">
+						
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">功能开关</label>
+								 <div class="col-xs-12">
+				{{if $at==0}}  
+				 <label class="lyear-switch switch-purple switch-light">
+                        <input type="checkbox" onclick="javascript:antisql_checkon(1)">
+                        <span></span>
+                      </label>
+		        {{else}} 
+				 <label class="lyear-switch switch-purple switch-light">
+                        <input type="checkbox" onclick="javascript:antisql_checkon(2)" checked="checked">
+                        <span></span>
+                      </label>
+				                       
+				{{/if}}
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">禁止参数值(正则):</label>
+								 <div class="col-xs-12">
+								 <input name='param_value' size='62' class="form-control" id='param'>
+                                  </div>
+								 <div class="col-xs-12">
+                                    <h4 id="nanyihelp"><font color='red'>帮助?示例</font></h4>                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">编码:</label>
+								 <div class="col-xs-12">
+						  <input name='charset' size='6' value='utf-8' class="form-control" id='charset' />
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+								 <div class="col-xs-12">
+						  <input type='button' onclick='antisql_add();' value='提交' class="btn btn-purple" />
+                                  </div>
+                              </div>
+                           </fieldset>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+        </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>
+<script language='javascript'>
+	form.param_value.focus();
+</script>
+<script language='javascript'>
+$('#nanyihelp').click(function() {
+    layer.alert("正则输入，如需防SQL注入，可用以下正则:<br>'.*[; ]?((or)|(insert)|(select)|(union)|(update)|(delete)|(replace)|(create)|(drop)|(alter)|(grant)|(load)|(show)|(exec))[\\s(]<br><input class='btn btn-danger' type='button' onclick='copy_code();' value='复制代码'>", {
+      icon:'error',
+    })
+});
+</script>

@@ -1,0 +1,78 @@
+<script language='javascript' src='{{$STATIC}}js/indexfile.js'></script>
+<script language='javascript'></script>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>默认首页文件名</h4></div>
+                <div class="panel-body">
+	             <div class="col-lg-12">
+                        <div class="table-responsive">
+<table class="table" cellpadding="0" cellspacing="0">
+    <thead>
+	<tr>
+		<th>操作</th>
+		<th>文件名</th>
+		<th>顺序</th>
+	</tr>
+	</thead>
+	<tbody>
+	{{foreach from=$in item=row}}
+	<tr>
+		<td><a class="btn btn-danger btn-xs" href="javascript:indexfile_del('{{$row.name}}')">删除</a></td>
+		<td>{{$row.name}}</td>
+		<td>{{$row.value}}</td>
+	</tr>
+	{{/foreach}}
+	</tbody>
+</table>
+	</div>
+                          <div class="col-md-12">
+						  
+<form action='?c=indexfile&a=indexfileAdd' method='post' name='from' class="form-horizontal">
+	
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>文件名：</label>
+								 <div>
+						  <input name="file" size='16' placeholder="例：default.php" id='file' class="form-control" />
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>先后顺序：</label>
+								 <div>
+						  <input name='id' placeholder="例：100" id='id' class="form-control" />
+                                  </div>
+								 <div>
+                                    <pre>注：数字小优先</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                            <input type='button' value='提交' onclick='indexfile_add();' class="btn btn-purple" />
+                              </div>
+                           </fieldset>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+         </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>
+
+<script language='javascript'>
+	from.file.focus();
+</script>

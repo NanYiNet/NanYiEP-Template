@@ -1,0 +1,113 @@
+<script language='javascript'>
+	function cache_clean() {
+		var url = $("#url").val();
+		if (url == "") {
+			return layer.alert('值不能为空', {icon: 'error'});
+		}
+		var url_arr = url.split("\n");
+		var clean_url = "";
+		for (i = 0; i < url_arr.length; i++) {
+			if (url_arr[i].substr(0, 7) != 'http://' && url_arr[i].substr(0, 8) != 'https://') {
+				return layer.alert('输入错误，请检查每个url前面必需有http://', {icon: 'error'});
+			}
+			if (url_arr[i].substr(-1) == '*') {
+				url_arr[i] = '3' + url_arr[i].substr(0, url_arr[i].length - 1);
+			}
+			clean_url += url_arr[i] + ', ';
+		}
+		$.ajax({
+			type : "POST",
+			url : '?c=cacheclean&a=cacheclean',
+			data : "url=" + clean_url,
+			success : function(msg) {
+				alert(msg);
+			}
+		});
+	}
+	function domain_cache_clean() {
+		var domain = $("#domain").val();
+		if (domain == "") {
+			return layer.alert('请先选择一个域名', {icon: 'error'});
+		}
+		var clean_url = "3http://"+domain+"/, 3https://"+domain+"/, ";
+		$.ajax({
+			type : "POST",
+			url : '?c=cacheclean&a=cacheclean',
+			data : "url=" + clean_url,
+			success : function(msg) {
+				alert(msg);
+			}
+		});
+	}
+</script>
+<!--页面主要内容-->
+    <main class="lyear-layout-content">
+
+      <div class="container-fluid">
+       <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>清除整个域名缓存</h4></div>
+              <div class="card-body">
+                
+                            <form action='javascript:cache_clean();' method='post' class="form-horizontal">
+                                <div class="row items-push">
+                                    <div class="col-lg-12">
+                                        <div class="form-group row">
+                                           <label class="col-xs-12" for="example-input-normal">选择域名：</label>
+                                            <div class="col-xs-12">
+                                                <select name="domain" id="domain" class="form-control">
+				{{foreach from=$list item=row}}<option value="{{$row}}">{{$row}}</option>{{/foreach}}
+				</select>
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="form-group row">
+                                                        <div class="col-xs-12">
+                        <input type='button' value='确认清除' onclick='domain_cache_clean();' class="btn btn-purple" />
+                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                     </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>清除单个URL网址缓存</h4></div>
+                        <div class="card-body">
+                        <div class="alert alert-info" role="alert">每行一个url，例：<u>http://www.baidu.com/</u> 或 <u>http://www.baidu.com/web/</u></div>
+                        <div class="form-group row">
+                                           <label class="col-xs-12" for="example-input-normal">输入域名：</label>
+                                            <div class="col-xs-12">
+                                                <textarea name="url" id='url' class="form-control" cols='62' rows='6' ></textarea>
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="form-group row">
+                                                        <div class="col-xs-12">
+                        <input type='button' value='确认清除' onclick='cache_clean();' class="btn btn-purple" />
+                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="alert alert-danger" role="alert">清除节点缓存之后可能还需要清除浏览器的缓存或按Ctrl+F5刷新页面才能看到最新的页面</div>
+                                     </div>
+            </div>
+          </div>
+        </div></form>
+        <!-- .row --> 
+               
+      </div>
+      
+    </main>
+       
+        </div>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

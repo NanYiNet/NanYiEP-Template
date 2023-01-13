@@ -1,0 +1,62 @@
+<script type="text/javascript">
+	//var s = "此功能将服务器数据压缩后发送给浏览者，这将有助于提高您的网页打开速度.";
+	//	alert(s);
+	function submit() {
+		var gzip = $("#gzip").val();
+		$.get("?c=response&a=addGzip&gzip=" + gzip, function(data) {
+			layer.alert(data, {icon: 'smile'});
+		});
+	}
+	function del() {
+		var r = confirm("确认删除该项设置？");
+		if (r == false)
+			return;
+		$.get("?c=response&a=delGzip", function(data) {
+			layer.alert(data, {icon: 'smile'});
+		});
+	}
+</script>
+<!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>开启页面Gzip压缩功能</h4></div>
+                <div class="panel-body">
+	             <div class="col-lg-12">
+					<form action='javascript:submit();' method='post' class="form-horizontal">
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">匹配Content-Type：</label>
+								 <div class="col-xs-12">
+						  <input name='gzip' id='gzip' value='text/ht*' class="form-control" />
+                                  </div>
+								 <div class="col-xs-12">
+						  <pre>支持正则表达式，如果不熟悉设置，默认即可！</pre>
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+								 <div class="col-xs-12">
+						  <input type='submit' value='开启Gzip压缩' class="btn btn-purple" />&nbsp;&nbsp;<input type="button" onclick="javascript:del();" value="清除设置" class="btn btn-info" />
+                                  </div>
+                              </div>
+                           </fieldset>
+						   </form>
+						   <p><div class="label label-warning">提示说明</div> &nbsp; 此功能将服务器数据压缩后发送给浏览者，这将有助于提高您的网页打开速度！</p>
+						   </div></div>
+                     </div>
+                  </div>
+			   </div>
+            </div>
+        </div>
+      
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

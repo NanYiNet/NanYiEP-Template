@@ -1,0 +1,271 @@
+               <!-- START Menu-->
+               <li>
+                  <a href="#" title="基本功能" data-toggle="collapse-next" class="has-submenu">
+                     <em class="fa fa-dashboard"></em>
+                     <div class="label label-primary pull-right"></div>
+                     <span class="item-text">基本功能</span>                  </a>
+                  <!-- START SubMenu item-->
+                  <ul class="nav collapse">
+                     <li>
+                        <a href="?c=domain&a=show" title="域名绑定" data-toggle="" class="no-submenu">
+                           <span class="item-text">域名绑定</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=session&a=changePasswordForm" title="密码设置" data-toggle="" class="no-submenu">
+                           <span class="item-text">密码设置</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=speed&a=speedFrom" title="带宽限制" data-toggle="" class="no-submenu">
+                           <span class="item-text">带宽限制</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=cache&a=cacheFrom" title="缓存设置" data-toggle="" class="no-submenu">
+                           <span class="item-text">缓存设置</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=cacheclean&a=cachecleanFrom" title="清除缓存" data-toggle="" class="no-submenu">
+                           <span class="item-text">清除缓存</span>                        </a>                     </li>
+						   {{if $user.cdn==0}}
+                     <li>
+                        <a href="?c=info&a=showErrorPage" title="自定义错误页" data-toggle="" class="no-submenu">
+                           <span class="item-text">自定义错误页</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=response&a=gzipFrom" title="Gzip压缩" data-toggle="" class="no-submenu">
+                           <span class="item-text">Gzip压缩</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=mime&a=mimeFrom" title="MIME设置" data-toggle="" class="no-submenu">
+                           <span class="item-text">MIME设置</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=rewrite&a=rewriteFrom" title="域名跳转" data-toggle="" class="no-submenu">
+                           <span class="item-text">域名跳转</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=indexfile&a=indexfileFrom" title="默认文件" data-toggle="" class="no-submenu">
+                           <span class="item-text">默认文件</span>                        </a>                     </li>
+                     <li>
+                        <a href="javascript:rebootProcess();" title="重启主机" data-toggle="" class="no-submenu">
+                           <span class="item-text">重启主机</span>                        </a>                     </li>
+						   {{/if}}
+                  </ul>
+                  <!-- END SubMenu item-->
+               </li>
+			   {{if $user.cdn==0}}
+			   
+               <li>
+                  <a href="#" title="FTP/文件管理" data-toggle="collapse-next" class="has-submenu">
+                     <em class="fa fa-folder-open"></em>
+
+                     <span class="item-text">FTP/文件管理</span>                  </a>
+                  <!-- START SubMenu item-->
+                  <ul class="nav collapse">
+                     <li>
+                        <a href="index.php?c=index&a=webftp" title="在线文件管理器" data-toggle="" class="no-submenu">
+                           <span class="item-text">在线文件管理器</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=shell&a=index" title="数据备份" data-toggle="" class="no-submenu">
+                           <span class="item-text">数据备份</span>                        </a>                     </li>
+				 {{if $user.ftp>0}}
+                     <li>
+                        <a href="?c=index&a=ftpForm" title="FTP设置" data-toggle="" class="no-submenu">
+                           <span class="item-text">FTP设置</span>                        </a>                     </li>
+					{{/if}}
+					{{if $ssl}}
+                     <li>
+                        <a href="?c=index&a=sslForm" title="SSL证书设置" data-toggle="" class="no-submenu">
+                           <span class="item-text">SSL证书设置</span>                        </a>                     </li>
+					{{/if}}
+					{{if $user.ssi}}
+                     <li>
+                        <a href="?c=ssi&a=show" title="SSI设置" data-toggle="" class="no-submenu">
+                           <span class="item-text">SSI设置</span>                        </a>                     </li>
+					{{/if}}
+                  </ul>
+                  <!-- END SubMenu item-->
+               </li>
+               <li>
+                  <a href='http://{{$smarty.server.SERVER_NAME}}:3313/mysql/?pma_username={{$user.db_name}}' target='_blank' title="phpMyAdmin" class="has-submenu">
+                     <em class="fa fa-table"></em>
+					 <div class="label label-primary pull-right">Mysql</div>
+                     <span class="item-text">数据库管理</span>                  </a>
+				</li>
+               {{/if}}	
+			   		   
+               <li>
+                  <a href="#" title="安全设置" data-toggle="collapse-next" class="has-submenu">
+                     <em class="fa fa-shield"></em>
+                     <span class="item-text">安全设置</span>                  </a>
+                  <!-- START SubMenu item-->
+                  <ul class="nav collapse ">
+                     <li>
+                        <a href="?c=banip&a=addTableFrom" title="禁止IP" data-toggle="" class="no-submenu">
+                           <span class="item-text">禁止IP</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=protection&a=addProtectionTableFrom" title="防盗链" data-toggle="" class="no-submenu">
+                           <span class="item-text">防盗链</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=antisql&a=antisqlFrom" title="参数过滤" data-toggle="" class="no-submenu">
+                           <span class="item-text">参数过滤</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=antiupload&a=antiuploadFrom" title="防木马上传" data-toggle="" class="no-submenu">
+                           <span class="item-text">防木马上传</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=anticc&a=anticcFrom" title="防CC攻击" data-toggle="" class="no-submenu">
+                           <span class="item-text">防CC攻击</span>                        </a>                     </li>
+                  </ul>
+                  <!-- END SubMenu item-->
+               </li>
+			   
+               <li class="active">
+                  <a href="#" title="高级设置" data-toggle="collapse-next" class="has-submenu">
+                     <em class="fa fa-edit"></em>
+                     <span class="item-text">高级设置</span>                  </a>
+                  <!-- START SubMenu item-->
+                  <ul class="nav collapse in">
+                     <li>
+                        <a href="?c=flow&a=viewFlow&t=day" title="流量图" data-toggle="" class="no-submenu">
+                           <span class="item-text">流量图</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=connection&a=connectionFrom" title="连接信息" data-toggle="" class="no-submenu">
+                           <span class="item-text">连接信息</span>                        </a>                     </li>
+					{{if $user.cdn==0}}
+                     <li>
+                        <a href='/vhost/log.php/' target='_blank' title="日志分析" data-toggle="" class="no-submenu">
+                           <span class="item-text">日志分析</span>                        </a>                     </li>
+                     <li>
+                        <a href="?c=capability&a=capabilityFrom" title="性能分析" data-toggle="" class="no-submenu">
+                           <span class="item-text">性能分析</span>                        </a>                     </li>
+					{{if $user.cron>0}}
+                     <li class="active">
+                        <a href="?c=cron&a=index" title="计划任务" data-toggle="" class="no-submenu">
+                           <div class="label label-primary pull-right">new</div>
+                           <span class="item-text">计划任务</span>                        </a>                     </li>
+					{{/if}}
+                     <li>
+                        <a href="?c=httpauth&a=index" title="HTTP认证" data-toggle="" class="no-submenu">
+                           <span class="item-text">HTTP认证</span>                        </a>                     </li>
+					{{/if}}
+                  </ul>
+                  <!-- END SubMenu item-->
+               </li>
+			   
+               <!-- END Menu-->
+               <!-- Sidebar footer    -->
+               <li class="nav-footer">
+                  <div class="nav-footer-divider"></div>
+                  <!-- START button group-->
+                  <div class="btn-group text-center">
+                     <a href="?c=session&a=changePasswordForm" data-toggle="tooltip" data-title="密码设置" class="btn btn-link">
+                        <em class="fa fa-cog text-muted"></em>                     </a>
+                     {{if $smarty.session.login_from=='vhost'}}
+                     <a href="?c=session&a=logout" data-toggle="tooltip" data-title="安全退出" class="btn btn-link">
+                        <em class="fa fa-sign-out text-muted"></em>                     </a>
+						{{/if}}
+                  </div>
+                  <!-- END button group-->
+               </li>
+            </ul>
+         </nav>
+         <!-- END Sidebar (left)-->
+      </aside>
+      <!-- End aside-->
+   <script src="{{$STATIC}}style/2014host/vendor/jquery/jquery.min.js"></script>
+   <script src="{{$STATIC}}style/2014host/vendor/bootstrap/js/bootstrap.min.js"></script>
+   <script src="{{$STATIC}}style/2014host/app/js/app.js"></script>
+      <!-- START Main section-->
+      <section>
+         <!-- START Page content-->
+         <section class="main-content">
+            <h3>计划任务
+               <br><br />
+              <small style="font-size:18px;"><a href="?c=index&a=main" class="label label-primary">面板首页</a>&nbsp;<a href="?c=domain&a=show" class="label label-success">域名绑定</a>&nbsp;<a href="index.php?c=index&a=webftp" class="label label-info">文件管理器</a>&nbsp;<a href="http://{{$smarty.server.SERVER_NAME}}:3313/mysql/?pma_username={{$user.db_name}}" target="_blank" class="label label-purple">数据库管理</a>
+			   </small>          </h3>
+			
+			<div class="row">
+               <!-- START dashboard main content-->
+               <div class="col-md-12">
+
+                  <!-- START panel-->
+                  <div class="panel panel-default">
+                     <div class="panel-heading">计划任务&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;<a href='?c=cron&a=sync'><div class="label label-danger">重建计划任务</div></a></div>
+                     <div class="panel-body">
+                        <div class="table-responsive">
+	<table class="table" cellpadding="0" cellspacing="0">
+	    <thead>
+		<tr>
+			<th>操作</th>
+			<th>执行周期/间隔</th>
+			<th>目标网址</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{foreach from=$crons item=cron}}
+		<tr>
+			<td><a href="?c=cron&a=del&id={{$cron.id}}">删除</a></td>
+			<td>{{$cron.min}} {{$cron.hour}} {{$cron.day}} {{$cron.month}} {{$cron.mday}}</td>
+			<td>{{$cron.cmd}}</td>
+		</tr>
+		{{/foreach}}
+		</tbody>
+	</table>
+	</div>
+					 <br /><br /><br />
+                          <div class="col-md-12">
+						  	<form action='?c=cron&a=add' method='post' class="form-horizontal">
+							<legend>功能参数设置</legend>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-sm-2 control-label">时间(crontab格式)</label>
+								 <div class="col-sm-4">
+								 <input name='t' placeholder="例：* * * * * 代表每分钟执行一次" class="form-control">
+                                  </div>
+								 <div class="col-sm-4">
+                                    <a href="" data-toggle="modal" data-target="#gsjc"><i class="fa fa-question-circle"></i> crontab格式设置教程</a>                             
+							     </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-sm-2 control-label">网址</label>
+								 <div class="col-sm-4">
+						  <input name='cmd' class="form-control">
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-sm-2 control-label"></label>
+								 <div class="col-sm-4">
+						  <input type='submit' value='增加' class="btn btn-primary" />
+                                  </div>
+                              </div>
+                           </fieldset>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+         </section>
+         <!-- END Page content-->
+	  </section>
+      <!-- END Main section-->
+   </section>
+   <!-- END Main wrapper-->
+
+   <div id="gsjc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+               <h4 id="myModalLabel" class="modal-title">crontab格式设置教程</h4>
+            </div>
+            <div class="modal-body">
+			
+		    <p>待添加</p>
+			
+			</div>
+            <div class="modal-footer">
+               <button type="button" data-dismiss="modal" class="btn btn-default">关闭</button>
+            </div>
+         </div>
+      </div>
+   </div>
+

@@ -1,0 +1,127 @@
+<script language='javascript' src='{{$STATIC}}js/cache.js'></script>
+<!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+		 <div class='pro_msg' style="display: none" id='msg'></div>
+            <div class="card">
+              <div class="card-header"><h4>缓存设置</h4></div>
+                <div class="panel-body">
+                <div class="col-lg-12">
+                        <div class="table-responsive">
+	<table class="table" cellpadding="0" cellspacing="0">
+	    <thead>
+		<tr>
+			<th>操作</th>
+			<th>序列</th>
+			<th>设置名称</th>
+			<th>缓存时间</th>
+			<th>值</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{foreach from=$header item=row}}
+		<tr>
+			<td><a class="btn btn-danger btn-xs" href="javascript:cache_del({{$row.id}})">删除</a></td>
+			<td>{{$row.id}}</td>
+			<td>{{$row.name}}</td>
+			<td>{{$row.max_age}} 秒 {{if $row.static}}强制缓存{{/if}}</td>
+			<td>{{$row.val}}</td>
+		</tr>
+		{{/foreach}}
+		</tbody>
+	</table>
+	</div>
+                          <div class="col-md-12">
+						  	<form action='?c=cache&a=cacheAdd' method='post' class="form-horizontal">
+			
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>功能开关：</label>
+								 <div>
+				{{if $at==0}}  
+				 <label class="lyear-switch switch-primary switch-light">
+                        <input type="checkbox" onclick="javascript:chche_checkon(1)">
+                        <span></span>
+                      </label>
+				               
+		        {{else}} 
+				 <label class="lyear-switch switch-primary switch-light">
+                        <input type="checkbox" onclick="javascript:chche_checkon(2)" checked="checked">
+                        <span></span>
+                      </label>
+				{{/if}}
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>类型：</label>
+								 <div>
+				     <select name='mode' id='mode' onchange='pro_msg(this.value);' class="form-control">
+						 <option value="file_ext">文件扩展名</option>
+						 <option value="content-type">content-Type</option>
+						 <option value="url">网址</option>
+				     </select>
+                                  </div>
+								 <div>
+                                    <pre>请选择类型</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>值：</label>
+								 <div>
+						  <input name="cache_value" id='cache_value' placeholder="请输入值" class="form-control"/>
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>缓存时间：</label>
+								 <div>
+						  <input name='max_age' id='max_age' placeholder="请输入缓存时间" class="form-control" />
+                                  </div>
+								 <div>
+                                   <pre>例：120，单位时间：秒</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>强制缓存：</label>
+								 <div>
+							  <label class="lyear-switch switch-primary switch-light">
+                        <input type="checkbox" name='static' value='1' id='static'>
+                        <span></span>
+                      </label>
+                                	
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label></label>
+								 <div>
+						  <input type='button' value='提交设置' onclick='cache_add();' class="btn btn-purple" />
+                                  </div>
+                              </div>
+                           </fieldset>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+
+<div id='script'></div>
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+           </div>
+      
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

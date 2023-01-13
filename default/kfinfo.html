@@ -1,0 +1,287 @@
+<script type='text/javascript'>
+	jQuery(document).ready(function() {
+		jQuery(".item").mouseover(function() {
+			jQuery(this).addClass('onMouseOver');
+		});
+		jQuery(".item").mouseout(function() {
+			jQuery(this).removeClass('onMouseOver');
+		});
+		if (msg != '') {
+			var dlog = art.dialog({id:'id232',time:3,content:msg,title:'提示',icon: 'warning',top:'53%'});
+		}
+	});
+	var webmit = '{{$user.web_quota}}';//{{$quota.web_limit}}在linux下得不到
+	if (webmit == '') {
+		webmit = 0;
+	}
+	if (webmit > 0) {
+		var web_used = '{{$quota.web_used}}';
+		if (web_used == '') {
+			web_used = 0;
+		}
+		var web_use_len = (web_used / webmit) * 100;
+		//web_use_len = 30;
+		var dbmit = '{{$quota.db_limit}}';
+		var db_used = '{{$quota.db_used}}';
+		if (db_used == '') {
+			db_used = 0;
+		}
+		if (dbmit == "") {
+			dbmit = 0;
+		}
+		if (dbmit > 0) {
+			var db_use_len = (db_used / dbmit) * 100;
+		}
+		jQuery(document).ready(function() {
+			if (web_use_len != null && web_use_len != 'undefined') {
+								if (web_use_len < 1) {
+									web_use_len = 1;
+								}
+								if (web_use_len > 100) {
+									web_use_len = 100;
+								}
+								jQuery("#webdd").html("<div class='progress progress-striped progress-xs' title='总大小："
+														+ webmit
+														+ "M   已使用："
+														+ web_use_len.toFixed(2)
+														+ "%'><div class='progress-bar progress-bar-info' role='progressbar' style='width:"
+														+ web_use_len.toFixed(2)
+														+ "%'></div></div>");
+							}
+							if (db_use_len != null && db_use_len != 'undefined') {
+								if (db_use_len < 1) {
+									db_use_len = 1;
+								}
+								if (db_use_len > 100) {
+									db_use_len = 100;
+								}
+								jQuery("#db").html("<div class='progress progress-striped progress-xs' title='总大小："
+														+ dbmit
+														+ "M   已使用："
+														+ db_use_len.toFixed(2)
+														+ "%'><div class='progress-bar progress-bar-success' role='progressbar' style='width:"
+														+ db_use_len.toFixed(2)
+														+ "%'></div></div>");
+							}
+						});
+	}
+</script>	
+
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card wave wave-animate-slow wave-success">
+              <div class="card-body position-relative clearfix ">
+                <div class="pull-right">
+                  <p class="h6 text-success m-t-0">主机运行状态</p>
+                  <p class="h3 text-success m-b-0">{{if $user.status==3}}数据库超限{{elseif $user.status==2}}暂停{{else}}正常{{/if}}</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-success"><i class="mdi mdi-server fa-1-5x"></i></span> </div>
+              </div>
+               <div class="clearfix">
+               <div class="text-center"><p><a class="btn btn-dark" href="javascript:rebootProcess();">重启进程</a></p></div>
+  	      	</div>
+            </div>
+          </div>
+          {{if $user.cdn==0}}
+          <div class="col-sm-6 col-lg-3">
+            <div class="card wave wave-animate-slow wave-danger">
+              <div class="card-body position-relative clearfix ">
+                <div class="pull-right">
+                  <p class="h6 text-danger m-t-0">WEB网页空间</p>
+                  <p class="h3 text-danger m-b-0">{{$user.web_quota}} MB</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-danger"><i class="mdi mdi-server fa-1-5x"></i></span> </div>
+              </div>
+              <div class="panel-body" id="webdd"></div>
+            </div>
+          </div>
+          {{if $quota.db_limit!=0}}
+          <div class="col-sm-6 col-lg-3">
+            <div class="card wave wave-animate-slow wave-info">
+              <div class="card-body position-relative clearfix ">
+                <div class="pull-right">
+                  <p class="h6 text-info m-t-0">数据库空间</p>
+                  <p class="h3 text-info m-b-0">{{$user.web_quota}} MB</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-info"><i class="mdi mdi-server fa-1-5x"></i></span> </div>
+              </div>
+              <div class="panel-body" id="db"></div>
+            </div>
+          </div>
+          {{/if}}{{/if}}
+          <div class="col-sm-6 col-lg-3">
+            <div class="card wave wave-animate-slow wave-warning">
+              <div class="card-body position-relative clearfix ">
+                <div class="pull-right">
+                  <p class="h6 text-warning m-t-0">月流量</p>
+                  <p class="h3 text-warning m-b-0">{{if $user.flow_limit}}{{$user.flow_limit}} G{{else}}不限{{/if}}</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-warning"><i class="mdi mdi-server fa-1-5x"></i></span> </div>
+              </div>
+              <div class="clearfix">
+               <div class="text-center"><p><b class="btn btn-dark">已用：{{number_format($flow.flow/1024,2)}}M</b></p></div>
+  	      	</div>
+  	      	</div>
+            </div>
+          </div>
+         </div>
+	{{if $user.cdn==0}}
+		<div class="col-md-4">
+                  <!-- START activity-->
+                  <div>
+                     <div class="card-header bg-purple">
+                        <div class="panel-title">FTP链接信息</div>
+                     </div>
+                     <!-- START list group-->
+                     <div class="list-group">
+                        <!-- START list group item-->
+							
+                        <div class="list-group-item">
+                           <div class="media">
+                              <div class="media-body clearfix">
+                                 <div class="media-heading text-purple m0">FTP链接信息  <a href="index.php?c=index&a=webftp" class="pull-right label label-purple">在线文件管理器</a></div>
+                                 <p class="m0">
+                                    {{if $user.cdn==0}}<small>FTP地址：{{$smarty.server.SERVER_NAME}}</small><br><small>FTP端口：21</small><br><small>FTP用户名：{{$user.name}}</small><br><small>FTP密码：[ <a href="?c=session&amp;a=changePasswordForm" data-perform="panel-collapse" data-toggle="tooltip" title="同面板登录密码，在会员中心-产品管理页进行FTP密码修改">查看/修改</a> ]</small>     {{/if}} </p>
+                                           </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>{{/if}}
+			{{if $quota.db_limit}}
+               <div class="col-md-4">
+                  <div>
+                     <div class="card-header bg-primary">
+                        <div class="panel-title">数据库链接信息</div>
+                     </div>
+                     <div class="list-group">
+                        <div class="list-group-item">
+                           <div class="media">
+                              <div class="media-body clearfix">
+                                 <div class="media-heading text-info m0">数据库链接信息  <a href="http://{{$smarty.server.SERVER_NAME}}:3313/mysql/?pma_username={{$user.db_name}}" target='_blank' class="pull-right label label-info">PHPMyAdmin</a></div>
+                                 <p class="m0">
+                                    {{if $user.cdn==0}}{{if $quota.db_limit}}{{if $user.db_type!='sqlsrv'}}<small>数据库地址：{{$node.db_host}}</small><br><small>数据库端口：{{$node.db_port}}</small>{{/if}}<br><small>数据库名：{{$user.db_name}}</small><br /><small>数据库用户名：{{$user.db_name}}</small><br /><small>数据库密码：[ <a href="?c=session&amp;a=changePasswordForm" data-perform="panel-collapse" data-toggle="tooltip" title="初始密码同FTP/面板登录密码，可单独设置修改。">修改密码</a> ]</small>{{/if}}{{/if}}                                </p>
+                                       </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>{{/if}}
+			<div class="col-md-4">
+                  <div>
+                     <div class="card-header bg-cyan">
+                        <div class="panel-title">主机参数信息</div>
+                     </div>
+                     <div class="list-group">
+                        <div class="list-group-item">
+                           <div class="media">
+                              <div class="media-body clearfix">
+                                 <div class="media-heading text-success m0">主机参数信息</div>
+                                 <p class="m0">
+                                    <small>绑定域名限制：{{if $user.domain==-1}}不限{{else}}{{$user.domain}}个{{/if}}</small><br /><small>最大连接数：{{if $user.max_connect==0}}不限{{else}}{{$user.max_connect}}{{/if}}</small><br /><small>带宽限制：{{if $user.speed_limit==0}}不限{{else}}{{$user.speed_limit/1024}}KB{{/if}}</small><br /><small>缓存命中率：{{if $flow.flow>0}}{{number_format($flow.flow_cache*100/$flow.flow,2)}}%{{else}}0%{{/if}}</small><br /> {{if $user.cdn==0}}<small>主机语言：{{if $user.module}}{{$user.module}}{{else}}{{$user.templete}}:{{$user.subtemplete}}{{/if}}</small><br /><small>
+			<form name='frm' action='?c=index&a=changeSubtemplete' method='post'>
+				<select name='subtemplete' onChange='frm.submit()'>
+				<option value=''>--请选择版本--</option>
+				{{foreach from=$subtempletes item=subtemplete}}
+				<option value='{{$subtemplete}}'{{if $subtemplete==$user.subtemplete}}selected{{/if}}>{{$subtemplete}}</option>
+				{{/foreach}}
+			</select>
+			</form>
+			{{/if}}</small><br />
+			{{if $module_link}}<small>
+			{{$module_link}}
+			</small>{{/if}}                                </p>
+                                                           </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12">
+            <div class="card">
+              <div class="card-header"><h4>常见问题</h4></div>
+              <div class="card-body">
+                
+                <!--手风琴效果-->
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-danger">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          如何通过域名正常访问网站
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse  collapse" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body">
+                        <p>主机开通成功后,如需通过域名正常访问，需要满足以下几个条件:<br>
+1、在本页内找到【域名绑定】并绑定域名，并将【域名绑定】的记录地址解析到你的域名管理后台；<br>
+2、将网站程序放到域名所绑定目录中。
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-info">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          网站出现无法连接服务器等故障
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="panel-body">
+                        <p>检查网站是否ping通：<br>
+电脑：Win+R（运行），输入命令：“ping 域名 -t”，看是否ping通，回应的IP是否为本主机的A记录IP，如果不是，则解析失败或解析未生效。</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          常见错误代码解释
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                      <div class="panel-body">
+                        <p>403: 未找到目录 <br>
+404: 未找到目录中的文件，或没有设置默认主页文件 <br>
+500：当前并发数已满，稍后再试 <br>
+503/504：主机被暂停/到期/违规/超流量/数据库 </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-purple">
+                    <div class="panel-heading" role="tab" id="headingfour">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+                          在线ZIP文件无法解压
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapsefour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfour">
+                      <div class="panel-body">
+                         <p>zip文件不能带中文、空格、特殊符号！<br>
+不能使用高比例压缩</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+        </div>
+      </div>
+      
+    </main>
+  </div>
+</div>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>

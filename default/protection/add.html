@@ -1,0 +1,101 @@
+<script language='javascript' src='{{$STATIC}}js/protection.js'></script>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>防盗链设置</h4></div>
+                <div class="panel-body">
+				<div class="col-lg-12">
+                        <div class="table-responsive">
+<table class="table">
+	<thead>
+		<tr>
+			<th>操作</th>
+			<th>目录规则</th>
+		</tr>
+	</thead>
+	<tbody>
+	{{foreach from=$paths item=row}}
+	<tr>
+		<td><a class="btn btn-danger btn-xs" href='javascript:protection_del({{$row.id}})'>删除</a></td>
+		<td>{{$row.path}}</td>
+	</tr>
+	{{/foreach}}
+	</tbody>
+</table>
+	</div>
+						  	<form action='?c=protection&a=addPath' method='post' class="form-horizontal">
+						
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">功能开关：</label>
+								 <div class="col-xs-12">
+				{{if $name}} 
+					 <label class="lyear-switch switch-purple switch-light">
+                        <input type="checkbox" onclick="javascript:protection_checkon(0)"   checked="checked">
+                        <span></span>
+                      </label>
+				                           
+		        {{else}} 
+				 <label class="lyear-switch switch-purple switch-light">
+                        <input type="checkbox" onclick="javascript:protection_checkon(1)">
+                        <span></span>
+                      </label>
+				                          
+				{{/if}}
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">保护路径，正则匹配：</label>
+								 <div class="col-xs-12">
+                                    <input name='path' id='path' size='40' class="form-control" />             </div>
+								<div class="col-xs-12"><pre>例：^/download</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">合法来源URL：</label>
+								 <div class="col-xs-12">
+								 <input name='referer' id='referer' size='40' placeholder="" class="form-control" />
+                                   </div>
+								<div class="col-xs-12"><pre>正则，不写表示相同主机</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">非法请求重定向：</label>
+								 <div class="col-xs-12">
+								 <input name='redirect' id='redirect' size='40' placeholder="" class="form-control" />
+                                   </div>
+								<div class="col-xs-12"><pre>不写则默认拒绝处理</pre></div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+								 <div class="col-sm-1">
+                                    <input type='button' onclick='protection_add()' value='提交设置' class="btn btn-purple" />             </div>
+							
+                                    <a href='javascript:protection_empty()'; class="btn btn-danger">清空设置</a>         
+                              </div>
+                           </fieldset>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+                  <!-- END panel-->
+
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+        </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

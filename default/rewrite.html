@@ -1,0 +1,134 @@
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>伪静态设置</h4></div>
+                <div class="panel-body">
+				<div class="col-lg-12">
+                <div class="alert alert-info" role="alert"><font color="red">支持<b>Apache</b>的伪静态规则</font><td colspan="2" style="padding-left:120px;color:grey">
+			<li>请选择您的应用，若设置伪静态后，网站无法正常访问，请尝试点击重置</li>
+			<li>您可以对伪静态规则进行修改，修改完后保存即可。</li>
+			</td></div>
+                   <form action='?c=index&a=ssl' method='post' class="form-horizontal">
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">网站目录:</label>
+                                 <div class="col-xs-12">
+								 <select class="form-control" name='id' id='dir'>
+				{{foreach from=$paths key=id item=row}}<option value="{{$id}}" {{if $id==$pathid}}selected{{/if}}>{{$row}}</option>{{/foreach}}
+			    </select>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">规则选择:</label>
+                                 <div class="col-xs-12">
+								 <select class="form-control" id='rule'>
+				<option value="0">0.当前</option>{{foreach from=$rules item=row}}<option value="{{$row}}">{{$row}}</option>{{/foreach}}
+			    </select>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">规则内容:</label>
+                                 <div class="col-xs-12">
+								 <textarea name='content' id='content' cols='80' rows='15' placeholder="" class="form-control">{{$content}}</textarea>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+                                 <div class="col-xs-12">
+                                    <input type='button' value='保存' class="btn btn-purple btn-w-md" onclick='edit_rewrite();'>&nbsp;&nbsp;<input type='button' value='重置' class="btn btn-danger btn-w-md" onclick='del_rewrite();'> </div>
+                              </div>
+                           </fieldset>
+
+						  </form> 
+				
+<script language='javascript'>
+function edit_rewrite()
+{
+	var id = $("#dir").val();
+	var content = $("#content").val();
+	if(id == ''){
+		return alert('请选择网站目录');
+	}
+	$.ajax({
+		type: "POST",
+		url: '?c=rewrites&a=edit',
+		data: {id:id, content:content},
+		success: function(msg){
+			if(msg == "成功") { 
+				layer.msg('保存成功！');
+				window.location.reload();
+			}else{
+				alert(msg);
+			}
+		},
+		error: function(){
+			layer.msg('数据加载失败');
+		}
+	});
+}
+function del_rewrite()
+{
+	var id = $("#dir").val();
+	if(id == ''){
+		return layer.msg('请选择网站目录');
+	}
+	if (confirm("确定删除伪静态规则吗?") != true) {
+		return;
+	}
+	$.ajax({
+		type:'POST',
+		url:'?c=rewrites&a=del',
+		data: {id:id},
+		success:function(msg) {
+			if (msg != "成功") {
+				return alert(msg);
+			}
+			window.location.reload();
+		},
+		error: function(){
+			layer.msg('数据加载失败');
+		}
+	});
+}
+$(document).ready(function(){
+	$("#dir").change(function(){
+		if($(this).val()!=''){
+			window.location.href='?c=rewrites&a=show&id='+$(this).val();
+		}
+	});
+	$("#rule").change(function(){
+		var name = $(this).val();
+		if(name!='0'){
+			$.ajax({
+				type:'GET',
+				dataType:'json',
+				url:'?c=rewrites&a=getRule&name='+name,
+				success:function(data) {
+					if (data.code == 0) {
+						$("#content").html(data.content);
+					}
+				},
+				error: function(){
+					layer.msg('数据加载失败');
+				}
+			});
+		}
+	});
+})
+</script>
+
+   
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

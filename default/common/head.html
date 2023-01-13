@@ -1,0 +1,326 @@
+<!--
+=================================================
+// +--------------------------------------------+
+// | Name: NanYiEP-Template
+// +--------------------------------------------+
+// | Author: Mr.南逸【Nathan】<www.nanyinet.com>
+// +--------------------------------------------+
+// | Contact: QQ：2322796106 QQ群：451717901
+// +--------------------------------------------+
+// | Date: 2021年11月24日 - 2021年11月26日
+// +--------------------------------------------+
+// | Form: PHPStorm
+// +--------------------------------------------+
+// | Tips: 本项目采用 MIT 开源许可证
+// | 请尊重作者劳动成果，请勿修改版权
+// | 只为给用户更好的体验！！
+// +--------------------------------------------+
+=================================================
+-->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>虚拟主机专用控制面板</title>
+<meta name="author" content="NanYi">
+<link rel="icon"href="{{$STATIC}}favicon.ico"type="image/x-icon"/>
+<link href="{{$STATIC}}NanYiTemplate/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{$STATIC}}NanYiTemplate/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="{{$STATIC}}NanYiTemplate/css/style.min.css" rel="stylesheet">
+<link rel="stylesheet" rev="stylesheet" href="/style/artdialog/skins/default.css" type="text/css"/>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>
+<script src="/style/jquery.js"></script>
+<script src="/style/jq.cookie.js"></script>
+<script src="/style/public.js"></script>
+<script type='text/javascript' src="/style/artdialog/artDialog.js"></script>
+
+</head>
+  
+<body style="background-image: url({{$STATIC}}NanYiTemplate/images/BackGround-Image.jpg);background-attachment: fixed;opacity:0.9;background-repeat: no-repeat;background-size: cover;-moz-background-size: cover;"></body>
+<body>
+<script type='text/javascript'>
+	jQuery(document).ready(function() {
+		jQuery(".wid_left").mouseover(function() {
+			jQuery(this).addClass('onMouseOver');
+		});
+		jQuery(".wid_left").mouseout(function() {
+			jQuery(this).removeClass('onMouseOver');
+		});
+	});
+</script>
+<script type='text/javascript'>
+var msg = '';
+	function changePassword() {
+	}
+	function rebootProcess()
+	{
+		if (confirm("确定要重启吗？这将对你现在运行中的网站中断请求！")) {
+			$.get("?c=index&a=rebootProcess", function(data) {
+				alert(data);
+			});
+		}
+	}
+</script>
+
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside class="lyear-layout-sidebar">
+       
+      <!-- logo -->
+      <div id="logo" class="sidebar-header">
+  <a href="http://www.nanyinet.cn"><img src="{{$STATIC}}NanYiTemplate/images/logo.png" height="36" title="NanYiEPTemplate" alt="NanYiEPTemplate" /></a>
+ 
+
+      </div>
+      <div class="lyear-layout-sidebar-scroll">
+        
+        <nav class="sidebar-main">
+          <ul class="nav nav-drawer">
+		     <li class="nav-item"> <a href="?c=index&a=main"><i class="mdi mdi-home"></i> 面板首页</a> </li>
+            <li class="nav-item nav-item-has-subnav">
+              <a href="javascript:void(0)"><i class="mdi mdi-monitor-multiple"></i> 基本功能</a>
+              <ul class="nav nav-subnav">
+           <li><a href="?c=domain&a=show">域名绑定</a></li>
+<li><a href="?c=session&a=changePasswordForm">密码设置</a></li>
+<li><a href="?c=speed&a=speedFrom">带宽限制</a></li>
+<li><a href="?c=cache&a=cacheFrom">缓存设置</a></li>
+<li><a href="?c=cacheclean&a=cachecleanFrom">清除缓存</a></li>
+{{if $user.cdn==0}}
+<li><a href="?c=info&a=showErrorPage">自定义错误页</a></li>
+<li><a href="?c=response&a=gzipFrom">Gzip压缩</a></li>
+<li><a href="?c=mime&a=mimeFrom">MIME设置</a></li>
+<li><a href="?c=rewrite&a=rewriteFrom">域名跳转</a></li>
+<li><a href="?c=indexfile&a=indexfileFrom">默认文件</a></li>
+<li><a href="javascript:rebootProcess();">重启主机</a></li>
+{{/if}}
+              </ul>
+            </li>
+             {{if $user.cdn==0}}
+            <li class="nav-item nav-item-has-subnav">
+              <a href="javascript:void(0)"><i class="mdi mdi-folder-open"></i> FTP/文件管理</a>
+              <ul class="nav nav-subnav">
+              
+<li><a href="?c=index&a=webftp">WEB在线文件管理</a></li>
+<li><a href="?c=shell&a=index">数据备份</a></li>
+{{if $user.ftp>0}}
+<li><a href="?c=index&a=ftpForm">FTP设置</a></li>
+{{/if}}
+{{if $ssl}}
+<li><a href="?c=index&a=sslForm">SSL证书设置</a></li>
+{{/if}}
+{{if $user.ssi}}
+<li><a href="?c=ssi&a=show">SSI设置</a></li>
+{{/if}}
+{{if $user.htaccess}}
+<li><a href="?c=rewrites&a=show">伪静态设置</a></li>
+{{/if}}
+
+
+              </ul>
+            </li>
+
+              <li class="nav-item">  <a href="http://{{$smarty.server.SERVER_NAME}}:3313/mysql/?pma_username={{$user.db_name}}" target='_blank'><i class="mdi mdi-database"></i> 数据库管理</a>
+            </li>
+             {{/if}}
+           
+           
+            <li class="nav-item nav-item-has-subnav">
+              <a href="javascript:void(0)"><i class="mdi mdi-security"></i> 安全设置</a>
+              <ul class="nav nav-subnav">
+                <li><a href="?c=banip&a=addTableFrom">禁止IP</a></li>
+<li><a href="?c=protection&a=addProtectionTableFrom">防盗链</a></li>
+<li><a href="?c=antisql&a=antisqlFrom">参数过滤</a></li>
+<li><a href="?c=antiupload&a=antiuploadFrom">防木马上传</a></li>
+<li><a href="?c=anticc&a=anticcFrom">防CC攻击</a></li>
+              </ul>
+            </li>
+            <li class="nav-item nav-item-has-subnav">
+              <a href="javascript:void(0)"><i class="mdi mdi-diamond"></i> 高级设置</a>
+              <ul class="nav nav-subnav">
+            <li><a href="?c=flow&a=viewFlow&t=day">流量图</a></li>
+<li><a href="?c=connection&a=connectionFrom">连接信息</a></li>
+{{if $user.cdn==0}}
+<li><a href='/vhost/log.php/' target='_blank'>日志分析</a></li>
+<li><a href="?c=capability&a=capabilityFrom">性能分析</a></li>
+{{if $user.cron>0}}
+<li><a href="?c=cron&a=index">计划任务</a></li>
+{{/if}}
+<li><a href="?c=httpauth&a=index">HTTP认证</a></li>
+{{/if}}
+              </ul>
+            </li>
+            
+        </nav>
+        
+        <div class="sidebar-footer">
+          <p class="copyright">Copyright &copy; 2021. <a target="_blank" href="http://www.nanyinet.com">虚拟主机控制面板</a> All rights reserved.</p>
+        </div>
+      </div>
+      
+    </aside>
+    <!--End 左侧导航-->
+    
+    <!--头部信息-->
+    <header class="lyear-layout-header">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title"><b> 虚拟主机控制面板 </b></span>
+          </div>
+          
+          <ul class="topbar-right">
+            <li class="dropdown dropdown-profile">
+              <a href="javascript:void(0)" data-toggle="dropdown">
+                <img class="img-avatar img-avatar-48 m-r-10" src="//q1.qlogo.cn/g?b=qq&nk=2322796106&s=100" alt="{{$user.name}}" />
+                <span>{{$user.name}} <span class="caret"></span></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li> <a href="?c=session&a=changePasswordForm"><i class="mdi mdi-account"></i> 密码设置</a> </li>
+             	 {{if $smarty.session.login_from=='vhost'}}   <li class="divider"></li>
+			
+                <li> <a href="?c=session&a=logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li> {{/if}}
+              </ul>
+            </li>
+            <!--切换主题配色-->
+		    <li class="dropdown dropdown-skin">
+			  <span data-toggle="dropdown" class="icon-palette"><i class="mdi mdi-palette"></i></span>
+			  <ul class="dropdown-menu dropdown-menu-right" data-stopPropagation="true">
+                <li class="drop-title"><p>主题</p></li>
+                <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="site_theme" value="default" id="site_theme_1" checked>
+                    <label for="site_theme_1"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="site_theme" value="dark" id="site_theme_2">
+                    <label for="site_theme_2"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="site_theme" value="translucent" id="site_theme_3">
+                    <label for="site_theme_3"></label>
+                  </span>
+                </li>
+			    <li class="drop-title"><p>LOGO</p></li>
+				<li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="logo_bg" value="default" id="logo_bg_1" checked>
+                    <label for="logo_bg_1"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="logo_bg" value="color_2" id="logo_bg_2">
+                    <label for="logo_bg_2"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="logo_bg" value="color_3" id="logo_bg_3">
+                    <label for="logo_bg_3"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="logo_bg" value="color_4" id="logo_bg_4">
+                    <label for="logo_bg_4"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="logo_bg" value="color_5" id="logo_bg_5">
+                    <label for="logo_bg_5"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="logo_bg" value="color_6" id="logo_bg_6">
+                    <label for="logo_bg_6"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="logo_bg" value="color_7" id="logo_bg_7">
+                    <label for="logo_bg_7"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="logo_bg" value="color_8" id="logo_bg_8">
+                    <label for="logo_bg_8"></label>
+                  </span>
+				</li>
+				<li class="drop-title"><p>头部</p></li>
+				<li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="header_bg" value="default" id="header_bg_1" checked>
+                    <label for="header_bg_1"></label>                      
+                  </span>                                                    
+                  <span>                                                     
+                    <input type="radio" name="header_bg" value="color_2" id="header_bg_2">
+                    <label for="header_bg_2"></label>                      
+                  </span>                                                    
+                  <span>                                                     
+                    <input type="radio" name="header_bg" value="color_3" id="header_bg_3">
+                    <label for="header_bg_3"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="header_bg" value="color_4" id="header_bg_4">
+                    <label for="header_bg_4"></label>                      
+                  </span>                                                    
+                  <span>                                                     
+                    <input type="radio" name="header_bg" value="color_5" id="header_bg_5">
+                    <label for="header_bg_5"></label>                      
+                  </span>                                                    
+                  <span>                                                     
+                    <input type="radio" name="header_bg" value="color_6" id="header_bg_6">
+                    <label for="header_bg_6"></label>                      
+                  </span>                                                    
+                  <span>                                                     
+                    <input type="radio" name="header_bg" value="color_7" id="header_bg_7">
+                    <label for="header_bg_7"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="header_bg" value="color_8" id="header_bg_8">
+                    <label for="header_bg_8"></label>
+                  </span>
+				</li>
+				<li class="drop-title"><p>侧边栏</p></li>
+				<li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="sidebar_bg" value="default" id="sidebar_bg_1" checked>
+                    <label for="sidebar_bg_1"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="sidebar_bg" value="color_2" id="sidebar_bg_2">
+                    <label for="sidebar_bg_2"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="sidebar_bg" value="color_3" id="sidebar_bg_3">
+                    <label for="sidebar_bg_3"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="sidebar_bg" value="color_4" id="sidebar_bg_4">
+                    <label for="sidebar_bg_4"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="sidebar_bg" value="color_5" id="sidebar_bg_5">
+                    <label for="sidebar_bg_5"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="sidebar_bg" value="color_6" id="sidebar_bg_6">
+                    <label for="sidebar_bg_6"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="sidebar_bg" value="color_7" id="sidebar_bg_7">
+                    <label for="sidebar_bg_7"></label>
+                  </span>
+                  <span>
+                    <input type="radio" name="sidebar_bg" value="color_8" id="sidebar_bg_8">
+                    <label for="sidebar_bg_8"></label>
+                  </span>
+				</li>
+			  </ul>
+			</li>
+            <!--切换主题配色-->
+          </ul>
+          
+        </div>
+      </nav>
+      
+    </header>
+    <!--End 头部信息-->

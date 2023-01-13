@@ -1,0 +1,104 @@
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>单域名SSL证书设置&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;{{if $ssl==1}}<div class="label label-success">证书状态：成功</div>{{else}}<div class="label label-danger">证书状态：失败</div>{{/if}}</h4></div>
+                <div class="panel-body">
+<div class="col-lg-12">
+                <div class="alert alert-info" role="alert">此处是域名&nbsp;<b style="color:red">{{$domain}}</b> 的SSL证书设置</div>
+                   <form action='?c=index&a=domainSsl' method='post' class="form-horizontal"><input type="hidden" name="domain" id="domain" value="{{$domain}}">
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">SSL证书内容:</label>
+                                 <div class="col-xs-12">
+								 <textarea name='certificate' cols=80 rows=8 class="form-control">{{$certificate}}</textarea>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">SSL证书密钥内容:</label>
+                                 <div class="col-xs-12">
+								 <textarea name='certificate_key' cols=80 rows=8 class="form-control">{{$certificate_key}}</textarea>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+                                 <div class="col-xs-12">
+                                    <input type='submit' value='提交' class="btn btn-purple">                               </div>
+                              </div>
+                           </fieldset>
+				{{if $ssl==1||$ssl_rewrite==1}}
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">HTTP跳转HTTPS</label>
+								 <div class="col-xs-12">
+				{{if $ssl_rewrite==0}}
+				                              <label class="lyear-switch switch-solid switch-purple">
+                                 <input type="checkbox" onclick="javascript:ssl_checkon(1)" title='开启'>
+                                 <span></span>                              </label>
+		        {{else}} 
+				                              <label class="lyear-switch switch-solid switch-purple">
+                                 <input type="checkbox" title='关闭' onclick="javascript:ssl_checkon(2)" checked="checked">
+                                 <span></span>                              </label>
+				{{/if}}
+                                  </div>
+                              </div>
+                           </fieldset>
+				{{/if}}
+				{{if $ssl==1||$http2==1}}
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">开启HTTP2</label>
+								 <div class="col-xs-12">
+				{{if $http2==0}}
+				                              <label class="lyear-switch switch-solid switch-purple">
+                                 <input type="checkbox" onclick="javascript:http2_checkon(1)" title='开启'>
+                                 <span></span>                              </label>
+		        {{else}} 
+				                              <label class="lyear-switch switch-solid switch-purple">
+                                 <input type="checkbox" title='关闭' onclick="javascript:http2_checkon(0)" checked="checked">
+                                 <span></span>                              </label>
+				{{/if}}
+                                  </div>
+                              </div>
+                           </fieldset>
+				{{/if}}</div>
+
+						  </form> 
+					
+
+                        </div>
+                     </div>
+                     <!-- END panel-->
+               </div>
+            </div>
+            <!-- END row-->
+         </section>
+         <!-- END Page content-->
+	  </section>
+      <!-- END Main section-->
+   </section>
+   <!-- END Main wrapper-->
+
+<script>
+function ssl_checkon(val)
+{
+	var data = 'status=' + val + '&domain=' + $("#domain").val();
+	functoin_checkon('?c=index&a=domainSslRewrite',data);
+}
+function http2_checkon(val)
+{
+	var data = 'status=' + val;
+	functoin_checkon('?c=index&a=http2',data);
+}
+</script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

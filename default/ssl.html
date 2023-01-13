@@ -1,0 +1,50 @@
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>SSL证书设置&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;{{if $ssl==1}}<div class="label label-success">证书状态：成功</div>{{else}}<div class="label label-danger">证书状态：失败</div>{{/if}}</h4></div>
+                <div class="panel-body">
+<div class="col-lg-12">
+                    <form action='?c=index&a=ssl' method='post' class="form-horizontal">
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">SSL证书内容:</label>
+                                 <div class="col-xs-12">
+								 <textarea name='certificate' cols=80 rows=8 class="form-control">{{$certificate}}</textarea>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">SSL证书密钥内容:</label>
+                                 <div class="col-xs-12">
+								 <textarea name='certificate_key' cols=80 rows=8 class="form-control">{{$certificate_key}}</textarea>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+                                 <div class="col-xs-12">
+                                    <input type='submit' value='提交' class="btn btn-purple">                               </div>
+                              </div>
+                           </fieldset>
+						  </form> 
+					
+
+                        </div>
+                     </div>
+                     <!-- END panel-->
+               </div>
+            </div>
+      </div>
+          </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>

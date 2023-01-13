@@ -1,0 +1,181 @@
+<script language='javascript' src='{{$PSTATIC}}/style/common.js'></script>
+<script type='text/javascript'>
+var cwd = '{{$cwd}}';
+var dflog = null;
+var left = null;
+</script>
+<script language='javascript' src='http://static.nanyinet.com/static/js/NanYiEPTemplateFile.js?v=3311411'></script>
+<script language='javascript'>
+	function setbgcolor(id, color) {
+		document.getElementById(id).style.backgroundColor = color;
+	}
+	var jq = jQuery.noConflict();
+	var msg = '{{$msg}}';
+	var defaulttop = '252px';
+	jq(document).mousemove(function(){
+		var scrolltop = document.documentElement.scrollTop;
+		if (dflog) {
+			dflog.position(left,scrolltop + parseInt(defaulttop) + 'px');
+		}
+	});
+</script>
+                             <main class="lyear-layout-content">
+
+ <script language='javascript' src='{{$STATIC}}js/domain.js'></script>
+ <div class="container-fluid">
+			<div class="row">
+               <div class="col-md-12">
+                  <div class="card">
+                     <div class="card-header"><h4>文件操作</h4></div>
+                     <div class="panel-body">
+                <div class="example-box">
+                    <a class="btn btn-label btn-primary" href='javascript:upload()'>
+                        <label><i class="mdi mdi-cloud-upload"></i></label> 上传文件</a>
+                    <a class="btn btn-label btn-success" href='javascript:addwget("{{$wgetdir}}")'>
+                        <label><i class="mdi mdi-arrow-down-bold-box"></i></label> 远程下载</a>
+                    <a class="btn btn-label btn-purple" href='javascript:mkdir()'>
+                        <label><i class="mdi mdi-folder-open"></i></label> 新建目录</a>
+                    <a class="btn btn-label btn-pink" href='javascript:refresh()'>
+                        <label><i class="mdi mdi-restore"></i></label> 刷新此页面</a>
+                        </div>
+                        <div class="example-box">
+                    <a class="btn btn-sm btn-yellow"  href='javascript:selectAll()'>全选</a>
+                    <a class="btn btn-sm btn-yellow"  href='javascript:reversSelectAll()'>反选</a>
+                    <a class="btn btn-sm btn-yellow"  href='javascript:rmall()'>删除</a>
+                    <a class="btn btn-sm btn-yellow"  href='javascript:copyall()'>复制</a>
+                    <a class="btn btn-sm btn-yellow"  href='?c=webftp&a=parse'>粘贴</a>
+                    <a class="btn btn-sm btn-yellow"  href='javascript:cutall()'>剪切</a>
+                    <a class="btn btn-sm btn-yellow"  href='javascript:compress("{{basename($cwd)}}")'>压缩</a>
+                    <a class="btn btn-sm btn-yellow"  href='javascript:readonly(1)'>只读</a>
+                    <a class="btn btn-sm btn-yellow"  href='javascript:readonly(0)'>可写</a>
+                    <a class="btn btn-sm btn-yellow"  href='?c=webftp&a=syncaccess'>重建属性</a>
+                    
+               
+                </div>
+            </div>
+                     </div>
+          </div>
+          </div>
+			<div class="row">
+               <!-- START dashboard main content-->
+               <div class="col-md-12">
+
+                  <!-- START panel-->
+                  <div class="card">
+                     <div class="card-header"><h4>在线文件管理器</h4></div>
+                     <div class="panel-body">
+<div class="main webftp">
+<div id='location'>
+	当前目录：<a href='?c=webftp&a=cd&file=%2f'>根目录</a> / 
+	{{foreach from=$cwds item=row}}
+		{{append var='dir' value=$row}}
+		{{append var='dir' value='/'}}
+		<a href='?c=webftp&a=cd&file=%2f{{urlencode(implode($dir))}}'>{{$row}}</a>
+		/ 
+	{{/foreach}}
+</div>
+<br>
+<div id="fileblock">
+<div class="table-responsive">
+	<table border="0" cellpadding="5" width='100%' cellspacing="0" class="table">
+		<tr>
+			<td colspan='6'>
+			<a href='?c=webftp&a=cd&file=..'>上级目录
+			</a>
+			<i style="margin-left:40px;">如无法操作,请更换chrome,或firefox浏览器。上传后缀为sql,zip格式的文件,文件后面会自动显示导入,解压按钮</i>
+			</td>
+		</tr>
+		{{foreach from=$files item=file}} {{$tr=$tr+1}}
+		<tr id='tr{{$tr}}' onMouseOver="setbgcolor('tr{{$tr}}','#e2efff')" onMouseOut="setbgcolor('tr{{$tr}}','#fefefe')">
+
+			<td width="60">
+			
+			<label class="lyear-checkbox checkbox-primary">
+                 <input name='files[]' type='checkbox' value='{{$cwd}}/{{$file.filename}}' >  <span></span>
+                            </label>
+                            </td>
+                            <td>
+				<img src='{{$STATIC}}/webftp/icon_{{$file.type}}.gif' border='0' /> <a href="javascript:getfile('{{$cwd}}/{{$file.filename}}',{{$file.dir}})">{{$file.filename}}</a>
+				{{if $file.type=='zip'}} 
+				<a class="btn btn-primary btn-xs" href="javascript:decompress('{{$cwd}}/{{$file.filename}}')">解压</a>
+				{{/if}}
+				{{if substr($file.filename,-7)=='.sql.7z' || substr($file.filename,-4)=='.sql'}} 
+				<a class="btn btn-info btn-xs" href="javascript:mysqldumpin('{{$cwd}}/{{$file.filename}}')">导入</a>
+				{{/if}}
+				{{if substr($file.filename,-7)=='.web.7z'}} 
+				<a class="btn btn-danger btn-xs" href="javascript:restoreweb('{{$cwd}}/{{$file.filename}}')">恢复</a>
+				{{/if}}
+			</td>
+			<td >
+				{{if !$file.writable}}
+				<img src='{{$STATIC}}/webftp/ro.gif' title="只读" border='0' />
+				{{else}}
+				<img src='{{$STATIC}}/webftp/write.gif' title="可写" border='0' /> 
+				{{/if}}
+			</td>
+			<td >
+				<a class="btn btn-yellow btn-xs" href="javascript:file_access('{{$cwd}}/{{$file.filename}}',{{$file.dir}},'{{$file.propty}}')">属性</a>
+				{{if $file.propty=='deny'}}
+				<img src='{{$STATIC}}/webftp/lock.gif' title="锁定" border='0' />
+				{{/if}}
+				{{if $file.propty=='static'}}
+				<img src='{{$STATIC}}/webftp/static.gif' title="静态" border='0' />
+				{{/if}}
+				{{if substr($file.propty,0,5)=='auth:'}} 
+				<img src='{{$STATIC}}/webftp/httpauth.png' title="http认证" alt="http认证"
+				border='0' /> 
+				{{/if}}
+				{{if substr($file.propty,0,3)=='ip:'}}
+				<img src='{{$STATIC}}/webftp/ipdeny.png' title="ip限制" alt="ip限制" border='0' />
+				{{/if}}
+			</td>
+			<td >
+				<a class="btn btn-danger btn-xs" href="javascript:rmfile('{{$cwd}}/{{$file.filename}}')">删除</a>
+				<a class="btn btn-dark btn-xs" href="javascript:rename('{{$cwd}}/{{$file.filename}}')">改名</a>
+				{{if !$file.dir}} 
+				<a class="btn btn-info btn-xs" href="javascript:editfrom('{{$cwd}}/{{$file.filename}}')">编辑</a>
+				{{/if}}
+			</td>
+			<td >
+			{{if $file.dir}}
+			 	&lt;DIR&gt; 
+			{{else}} 
+				{{if $file.info[7]>1048576}}
+					{{number_format($file.info[7]/1048576, 2,'.', '')}}MB
+				{{elseif $file.info[7]>1024}}
+					{{number_format($file.info[7]/1024, 2, '.', '')}}KB 
+				{{else}}
+					{{$file.info[7]}} 
+				{{/if}} 
+			{{/if}}
+			</td>
+			<td >
+			{{if $file.dir}}
+				-
+			{{else}}
+				{{date("Y-m-d H:i:s",$file.info[9])}}
+			{{/if}}
+			</td>
+		</tr>
+		{{/foreach}}
+	</table>
+</div>
+</div>
+	
+	
+	
+                     </div>
+                  </div>
+                  <!-- END panel-->
+
+			   </div>
+               <!-- END dashboard sidebar-->
+            </div>
+          </div>
+      
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>

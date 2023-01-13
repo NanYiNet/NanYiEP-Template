@@ -1,0 +1,108 @@
+<script language='javascript' src='{{$STATIC}}js/rewrite.js'></script>
+<script language='javascript'></script>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>域名跳转设置</h4></div>
+                <div class="panel-body">
+	             <div class="col-lg-12">
+                        <div class="table-responsive">
+<table class="table" cellpadding="0" cellspacing="">
+<thead>
+	<tr>
+		<th>操作</th>
+		<th>序列</th>
+		<th>域名</th>
+		<th>跳转到域名</th>
+		<th>跳转代码</th>
+	</tr>
+	</thead>
+	<tbody>
+	{{foreach from=$res item=row}}
+	<tr>
+		<td><a class="btn btn-danger btn-xs" href="javascript:rewrite_del('{{$row.id}}')">删除</a></td>
+		<td>{{$row.id}}</td>
+		<td>{{$row.host}}</td>
+		<td>{{$row.dst}}</td>
+		<td>{{$row.code}}</td>
+	</tr>
+	{{/foreach}}
+	</tbody>
+</table>
+	</div>
+                          <div class="col-md-12">
+						  
+<form action='?c=rewrite&a=rewriteAdd' method='post' name='form' class="form-horizontal">
+						
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>功能开关：</label>
+								 <div>
+				{{if $at==0}}  
+				<a href="?c=rewrite&a=rewriteCheckOn&status=1" title='点击开启功能' class="btn btn-danger">当前状态：关闭</a>
+		        {{else}} 
+				<a href="?c=rewrite&a=rewriteCheckOn&status=2" title='点击禁用功能' class="btn btn-success">当前状态：开启</a>
+				{{/if}}
+                                  </div>
+								 <div>
+                                    <pre>点击状态按钮可开启或关闭当前功能</pre>                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>域名：</label>
+								 <div>
+                                 <input name="host" size='20' id='host' placeholder="请输入要做跳转的域名地址" class="form-control" />
+                                  </div>
+								 <div>
+                                    <pre>要做跳转的域名地址  </pre>                               </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>跳转到域名：</label>
+								 <div>
+                                 <input name='dst' size='20' id='dst' placeholder="请输入要跳转到的目标域名地址" class="form-control" />
+                                  </div>
+								 <div>
+                                    <pre>要跳转到的目标域名地址   </pre>                              </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label>跳转代码：</label>
+								 <div>
+                                 <input name='code' size='6' value='301' class="form-control" id='code' />
+                                  </div>
+								 <div>
+                                    <pre>301,302           </pre>                    </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <input type='button' value='提交' onclick='rewrite_add();' class="btn btn-purple" />
+                              </div>
+                           </fieldset>
+						   </form>
+						   </div>
+                     </div>
+                  </div>
+			   </div>
+                     <div class="alert alert-danger" role="alert">可以将一个域名做301,302跳转到另外一个域名</div>
+               <!-- END dashboard sidebar-->
+            </div>
+         </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/layer/layer.js"></script>
+
+
+<script language='javascript'>
+	form.host.focus();
+</script>

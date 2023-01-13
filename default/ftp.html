@@ -1,0 +1,57 @@
+   <main class="lyear-layout-content">
+
+ <div class="container-fluid">
+            <!-- START row-->
+            <div class="row">
+               <div class="col-md-12">
+                     <!-- START panel-->
+                   <div class="card"  action="">
+                     <div class="card-header">
+                           <div class="panel-title"><h4>FTP设置&nbsp; &nbsp; &nbsp; &nbsp;<a href="ftp://{{$user.name}}@{{gethostbyname($smarty.server.SERVER_NAME)}}" target='_blank'><div class="label label-purple">在线FTP</div></a></h4></div>
+                        </div>
+                        <div class="panel-body">
+                        <div class="col-lg-12">
+						<form action='?c=index&a=ftp' method='post' class="form-horizontal">
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">FTP开关：</label>
+                                 <div class="col-xs-12">
+                            <label class="lyear-radio radio-inline radio-purple">
+
+                                 <input id="inlineradio1" type="radio" name='ftp' value='1' {{if $user.ftp==1}}checked{{/if}}>
+                                 <span class="fa fa-circle"></span>启用</label>
+                            <label class="lyear-radio radio-inline radio-purple">
+
+                                 <input id="inlineradio1" type="radio" name="ftp" value='2' {{if $user.ftp==2}}checked{{/if}}>
+                                 <span class="fa fa-circle"></span>禁用</label>
+                                 </div>                                 
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12">FTP目录：</label>
+                                 <div class="col-xs-12">
+								 <input name="ftp_subdir" type='text' placeholder="默认为根目录" value="{{$user.ftp_subdir}}" class="form-control"><pre>多级目录格式如：wwwroot/view/default</pre>
+                                  </div>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="col-xs-12"></label>
+                                 <div class="col-xs-12">
+                                    <input type='submit' class="btn btn-purple" value='提交'></div>
+                              </div>
+                           </fieldset>
+						   </form>
+						   
+                        </div>
+                     </div>
+                     <!-- END panel-->
+               </div>
+            </div>
+            </div>
+    </main>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="{{$STATIC}}NanYiTemplate/js/main.min.js"></script>
